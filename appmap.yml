@@ -1,7 +1,6 @@
 name: solidus
 
 packages:
-- path: api
-- path: backend
-- path: core
-- path: frontend
+- path: app/controllers
+- path: app/helpers
+- path: lib
