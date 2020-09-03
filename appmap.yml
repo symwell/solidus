@@ -1,0 +1,7 @@
+name: solidus
+
+packages:
+- path: api
+- path: backend
+- path: core
+- path: frontend

@@ -1,5 +1,17 @@
 # Turn on validation, so we can use import:
 version: ~> 1.0
 
+import:
+- land-of-apps/land-of-apps:travis/ruby-imports.yml
+
 script:
-- ./bin/rspec
+- cd api;      APPMAP=true bundle exec rspec; cd ..
+- cd backend;  APPMAP=true bundle exec rspec; cd ..
+- cd core;     APPMAP=true bundle exec rspec; cd ..
+- cd frontend; APPMAP=true bundle exec rspec; cd ..
+
+after_script:
+- env DEBUG=true ruby ./upload-appmaps api/tmp/appmap/rspec
+- env DEBUG=true ruby ./upload-appmaps backend/tmp/appmap/rspec
+- env DEBUG=true ruby ./upload-appmaps core/tmp/appmap/rspec
+- env DEBUG=true ruby ./upload-appmaps frontend/tmp/appmap/rspec
