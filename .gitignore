@@ -15,7 +15,6 @@ pkg
 /sandbox
 **/spec/dummy
 **/spec/examples.txt
-tmp
 coverage
 var
 TAGS
