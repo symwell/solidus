@@ -11,7 +11,9 @@ script:
 - cd frontend; APPMAP=true bundle exec rspec; cd ..
 
 after_script:
-- env DEBUG=true ruby ./upload-appmaps api/tmp/appmap/rspec
-- env DEBUG=true ruby ./upload-appmaps backend/tmp/appmap/rspec
-- env DEBUG=true ruby ./upload-appmaps core/tmp/appmap/rspec
-- env DEBUG=true ruby ./upload-appmaps frontend/tmp/appmap/rspec
+- env DEBUG=true ruby ./upload-appmaps tmp/appmap/rspec
+
+# - env DEBUG=true ruby ./upload-appmaps api/tmp/appmap/rspec
+# - env DEBUG=true ruby ./upload-appmaps backend/tmp/appmap/rspec
+# - env DEBUG=true ruby ./upload-appmaps core/tmp/appmap/rspec
+# - env DEBUG=true ruby ./upload-appmaps frontend/tmp/appmap/rspec
