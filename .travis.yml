@@ -12,9 +12,9 @@ script:
 
 
 after_script:
-- mkdir -p                              ~/tmp/appmap/rspec
-- mv -v ~/api/tmp/appmap/rspec/*        ~/tmp/appmap/rspec
-- mv -v ~/backend/tmp/appmap/rspec/*    ~/tmp/appmap/rspec
-- mv -v ~/core/tmp/appmap/rspec/*       ~/tmp/appmap/rspec
-- mv -v ~/frontend/tmp/appmap/rspec/*   ~/tmp/appmap/rspec
-- env DEBUG=true ruby ./upload-appmaps  ~/tmp/appmap/rspec
+- mkdir -p                              /tmp/appmap/rspec
+- mv -v /api/tmp/appmap/rspec/*         /tmp/appmap/rspec
+- mv -v /backend/tmp/appmap/rspec/*     /tmp/appmap/rspec
+- mv -v /core/tmp/appmap/rspec/*        /tmp/appmap/rspec
+- mv -v /frontend/tmp/appmap/rspec/*    /tmp/appmap/rspec
+- env DEBUG=true ruby ./upload-appmaps  /tmp/appmap/rspec
