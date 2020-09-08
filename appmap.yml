@@ -1,6 +1,0 @@
-name: solidus
-
-packages:
-- path: app/controllers
-- path: app/helpers
-- path: lib

@@ -1,1 +1,7 @@
-../appmap.yml
+name: solidus
+
+packages:
+- path: app/controllers
+- path: app/helpers
+- path: config
+- path: lib
