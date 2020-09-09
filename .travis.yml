@@ -5,16 +5,11 @@ import:
 - land-of-apps/land-of-apps:travis/ruby-imports.yml
 
 script:
-- cd api;       APPMAP=true bundle exec rspec;  cd ..
-- cd backend;   APPMAP=true bundle exec rspec;  cd ..
-- cd core;      APPMAP=true bundle exec rspec;  cd ..
-- cd frontend;  APPMAP=true bundle exec rspec;  cd ..
+- (cd api;       APPMAP=true bundle exec rspec)
+- (cd backend;   APPMAP=true bundle exec rspec)
+- (cd core;      APPMAP=true bundle exec rspec)
+- (cd frontend;  APPMAP=true bundle exec rspec)
 
 
 after_script:
-- mkdir -p                              /tmp/appmap/rspec
-- mv -v /api/tmp/appmap/rspec/*         /tmp/appmap/rspec
-- mv -v /backend/tmp/appmap/rspec/*     /tmp/appmap/rspec
-- mv -v /core/tmp/appmap/rspec/*        /tmp/appmap/rspec
-- mv -v /frontend/tmp/appmap/rspec/*    /tmp/appmap/rspec
-- env DEBUG=true ruby ./upload-appmaps  /tmp/appmap/rspec
+- env DEBUG=true ruby ./upload-appmaps  */tmp/appmap/rspec
