@@ -16,7 +16,7 @@ script: |
     APPMAP=true bundle exec rspec -f doc || true
   )
   export -f run_tests
-  echo 'api backend core frontend' | parallel --will-cite --line-buffer -d ' ' run_tests
+  echo 'api backend core frontend' | parallel -j3 --will-cite --line-buffer -d ' ' run_tests
 
 env:
   global:
