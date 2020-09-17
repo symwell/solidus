@@ -7,6 +7,7 @@ require 'rails'
 require 'active_record/railtie'
 require 'action_controller/railtie'
 require 'action_mailer/railtie'
+require 'appmap/railtie'
 
 Rails.env = 'test'
 
