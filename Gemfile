@@ -36,7 +36,7 @@ group :backend, :frontend, :core, :api do
     gem 'activerecord-jdbcsqlite3-adapter', require: false
   end
 
-  gem 'appmap'
+  gem 'appmap', github: 'applandinc/appmap-ruby', branch: 'master'
 
   gem 'database_cleaner', '~> 1.3', require: false
   gem 'factory_bot_rails', '~> 4.8', require: false
