@@ -9,15 +9,42 @@ addons:
     packages:
     - parallel
 
-script: |
-  run_tests() (
-    cd $1
-    # Use -f doc so we get regular output and keep Travis happy
-    APPMAP=true bundle exec rspec -f doc || true
-  )
-  export -f run_tests
-  echo 'api backend core frontend' | parallel -j3 --will-cite --line-buffer -d ' ' run_tests
+# script: |
+#   run_tests() (
+#     cd $1
+#     # Use -f doc so we get regular output and keep Travis happy
+#     APPMAP=true bundle exec rspec -f doc || true
+#   )
+#   export -f run_tests
+#   echo 'api backend core frontend' | parallel -j3 --will-cite --line-buffer -d ' ' run_tests
 
 env:
   global:
   - EXTRA_APPMAPS="*/tmp/appmap/rspec"
+
+jobs:
+  include:
+  - stage: test
+    workspaces:
+      create:
+        name: appmaps
+        paths:
+        - "$EXTRA_APPMAPS"
+    script: |
+      run_tests() (
+        cd $1
+        # Use -f doc so we get regular output and keep Travis happy
+        APPMAP=true bundle exec rspec -f doc || true
+      )
+      export -f run_tests
+      echo 'api backend core frontend' | parallel --will-cite --line-buffer -d ' ' run_tests
+    after_script:
+    - true
+  - stage: upload
+    workspaces:
+      use:
+      - appmaps
+    install:
+    - true
+    script:
+    - true
