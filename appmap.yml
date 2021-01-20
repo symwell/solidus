@@ -14,4 +14,12 @@ packages:
 - gem: paperclip
 - gem: terrapin
 - gem: monetize
-
+- gem: solidus_core
+- gem: solidus_api
+- gem: solidus_backend
+- gem: solidus_frontend
+- gem: activemerchant
+- gem: cancancan
+- gem: ransack
+- gem: carmen
+- gem: mini_magick
