@@ -10,3 +10,8 @@ packages:
 - path: config
 - path: db
 - path: lib
+- gem: image_processing
+- gem: paperclip
+- gem: terrapin
+- gem: monetize
+

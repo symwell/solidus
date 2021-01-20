@@ -311,13 +311,22 @@ You can see the build statuses at
 
 #### Run all tests
 
+For PostgreSQL, setup the database:
+
+```
+export DB=postgres
+cd solidus_dev
+docker-compose up -d pg
+docker-compose port pg 5432
+export DATABASE_URL=postgres://postgres@localhost:<port-number>
+```
+
 [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/home) is
 required to run the frontend and backend test suites.
 
 To execute all of the test specs, run the `bin/build` script at the root of the Solidus project:
 
 ```bash
-createuser --superuser --echo postgres # only the first time
 bin/build
 ```
 
