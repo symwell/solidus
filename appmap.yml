@@ -1,4 +1,4 @@
-name: solidus
+name: nytem-2021/solidus
 
 packages:
 - path: app/controllers
