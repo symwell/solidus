@@ -6,6 +6,7 @@ module Spree
       # Note: the AddressBook is the resource to think about here, not individual addresses
       before_action :load_user_addresses
 
+      # @label rest.show
       def show
         authorize! :show, address_book_user
 
@@ -23,6 +24,7 @@ module Spree
       #   (e.g. changed the 'default' flag).  The user's default address will be
       #   flagged with default=true and the target address from this update will
       #   be flagged with update_target=true.
+      # @label rest.update
       def update
         authorize! :save_in_address_book, address_book_user
 
@@ -36,6 +38,7 @@ module Spree
         end
       end
 
+      # @label rest.delete
       def destroy
         authorize! :remove_from_address_book, address_book_user
 

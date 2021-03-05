@@ -33,6 +33,31 @@ module Spree
 
       helper Spree::Api::ApiHelpers
 
+      # @label provider.current_user
+      def load_user
+        @current_api_user ||= Spree.user_class.find_by(spree_api_key: api_key.to_s)
+      end
+
+      def authenticate_user
+        unless @current_api_user
+          if requires_authentication? && api_key.blank? && order_token.blank?
+            render "spree/api/errors/must_specify_api_key", status: :unauthorized
+          elsif order_token.blank? && (requires_authentication? || api_key.present?)
+            render "spree/api/errors/invalid_api_key", status: :unauthorized
+          end
+        end
+      end
+
+      # @label rbac.roles
+      def load_user_roles
+        @current_user_roles = if @current_api_user
+          @current_api_user.spree_roles.pluck(:name)
+        else
+          []
+        end
+      end
+
+
       private
 
       # users should be able to set price when importing orders via api

@@ -3,6 +3,7 @@
 module Spree
   module Api
     class ProductsController < Spree::Api::BaseController
+      # @label rest.list
       def index
         if params[:ids]
           ids = params[:ids].split(",").flatten
@@ -29,6 +30,7 @@ module Spree
       def new
       end
 
+      # @label rest.show
       def show
         @product = find_product(params[:id])
         expires_in 15.minutes, public: true
@@ -70,6 +72,7 @@ module Spree
       #     shipping_category: "Free Shipping Items"
       #   }
       #
+      # @label rest.create
       def create
         authorize! :create, Product
         params[:product][:available_on] ||= Time.current
@@ -85,6 +88,7 @@ module Spree
         end
       end
 
+      # @label rest.update
       def update
         @product = find_product(params[:id])
         authorize! :update, @product
@@ -99,6 +103,7 @@ module Spree
         end
       end
 
+      # @label rest.delete
       def destroy
         @product = find_product(params[:id])
         authorize! :destroy, @product
