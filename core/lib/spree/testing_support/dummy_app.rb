@@ -8,7 +8,7 @@ require 'rails'
 require 'active_record/railtie'
 require 'action_controller/railtie'
 require 'action_mailer/railtie'
-require 'appmap/railtie'
+require 'appmap/railtie' if defined?(AppMap)
 
 Rails.env = 'test'
 
