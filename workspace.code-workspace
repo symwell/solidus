@@ -1,0 +1,52 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/actioncable-6.0.3.4"
+		},
+		{
+			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/actionmailbox-6.0.3.4"
+		},
+		{
+			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/actionmailer-6.0.3.4"
+		},
+		{
+			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/actionpack-6.0.3.4"
+		},
+		{
+			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/actiontext-6.0.3.4"
+		},
+		{
+			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/actionview-6.0.3.4"
+		},
+		{
+			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/activejob-6.0.3.4"
+		},
+		{
+			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/activemerchant-1.117.0"
+		},
+		{
+			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/activemodel-6.0.3.4"
+		},
+		{
+			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/activerecord-6.0.3.4"
+		},
+		{
+			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/activestorage-6.0.3.4"
+		},
+		{
+			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/activesupport-6.0.3.4"
+		},
+		{
+			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/cancancan-3.1.0"
+		},
+		{
+			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/terrapin-0.6.0"
+		},
+		{
+			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/paperclip-6.1.0"
+		}
+	]
+}
