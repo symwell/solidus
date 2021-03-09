@@ -25,6 +25,8 @@ module Spree
       def create
         @user = Spree.user_class.new(user_params)
         if @user.save
+          set_stock_locations
+
           flash[:success] = t('spree.created_successfully')
           redirect_to edit_admin_user_url(@user)
         else
