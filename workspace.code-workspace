@@ -48,5 +48,8 @@
 		{
 			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/paperclip-6.1.0"
 		}
-	]
+	],
+	"settings": {
+		"terminal.integrated.scrollback": 10000
+	}
 }
