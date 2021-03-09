@@ -12,9 +12,7 @@ packages:
 - path: lib
 - gem: image_processing
 - gem: paperclip
-  shallow: false
 - gem: terrapin
-  shallow: false
 - gem: monetize
 - gem: solidus_core
   shallow: false
@@ -25,7 +23,9 @@ packages:
 - gem: solidus_frontend
   shallow: false
 - gem: activemerchant
+- gem: activerecord
 - gem: cancancan
+  shallow: false
 - gem: ransack
 - gem: carmen
 - gem: mini_magick
