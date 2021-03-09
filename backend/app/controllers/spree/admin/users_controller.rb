@@ -3,6 +3,8 @@
 module Spree
   module Admin
     class UsersController < ResourceController
+      include RolesHelper
+
       rescue_from ActiveRecord::DeleteRestrictionError, with: :user_destroy_with_orders_error
 
       after_action :sign_in_if_change_own_password, only: :update
@@ -173,12 +175,6 @@ module Spree
 
       def load_stock_locations
         @stock_locations = Spree::StockLocation.accessible_by(current_ability)
-      end
-
-      def set_roles
-        if user_params[:spree_role_ids]
-          @user.spree_roles = Spree::Role.accessible_by(current_ability).where(id: user_params[:spree_role_ids])
-        end
       end
 
       def set_stock_locations
