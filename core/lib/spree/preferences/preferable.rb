@@ -62,6 +62,7 @@ module Spree
       # Get a preference
       # @param name [#to_sym] name of preference
       # @return [Object] The value of preference +name+
+      # @label provider.preferences
       def get_preference(name)
         has_preference! name
         send self.class.preference_getter_method(name)
@@ -70,6 +71,7 @@ module Spree
       # Set a preference
       # @param name [#to_sym] name of preference
       # @param value [Object] new value for preference +name+
+      # @label provider.preferences
       def set_preference(name, value)
         has_preference! name
         send self.class.preference_setter_method(name), value

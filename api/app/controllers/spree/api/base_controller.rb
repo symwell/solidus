@@ -33,11 +33,14 @@ module Spree
 
       helper Spree::Api::ApiHelpers
 
+      public
+
       # @label provider.current_user
       def load_user
         @current_api_user ||= Spree.user_class.find_by(spree_api_key: api_key.to_s)
       end
 
+      # @label provider.authentication
       def authenticate_user
         unless @current_api_user
           if requires_authentication? && api_key.blank? && order_token.blank?
@@ -58,6 +61,36 @@ module Spree
       end
 
 
+      # @label credential.api_key
+      def api_key
+        bearer_token || spree_token || params[:token]
+      end
+      helper_method :api_key
+
+      # @label credential.bearer_token
+      def bearer_token
+        pattern = /^Bearer /
+        header = request.headers["Authorization"]
+        header.gsub(pattern, '') if header.present? && header.match(pattern)
+      end
+
+      # @label credential.spree_token
+      def spree_token
+        token = request.headers["X-Spree-Token"]
+        return if token.blank?
+
+        Spree::Deprecation.warn(
+          'The custom X-Spree-Token request header is deprecated and will be removed in the next release.' \
+          ' Please use bearer token authorization header instead.'
+        )
+        token
+      end
+
+      # @label credential.order_token
+      def order_token
+        request.headers["X-Spree-Order-Token"] || params[:order_token]
+      end
+
       private
 
       # users should be able to set price when importing orders via api
@@ -66,28 +99,6 @@ module Spree
           super + admin_line_item_attributes
         else
           super
-        end
-      end
-
-      def load_user
-        @current_api_user ||= Spree.user_class.find_by(spree_api_key: api_key.to_s)
-      end
-
-      def authenticate_user
-        unless @current_api_user
-          if requires_authentication? && api_key.blank? && order_token.blank?
-            render "spree/api/errors/must_specify_api_key", status: :unauthorized
-          elsif order_token.blank? && (requires_authentication? || api_key.present?)
-            render "spree/api/errors/invalid_api_key", status: :unauthorized
-          end
-        end
-      end
-
-      def load_user_roles
-        @current_user_roles = if @current_api_user
-          @current_api_user.spree_roles.pluck(:name)
-        else
-          []
         end
       end
 
@@ -125,33 +136,6 @@ module Spree
         @resource = resource
         render "spree/api/errors/invalid_resource", status: :unprocessable_entity
       end
-
-      def api_key
-        bearer_token || spree_token || params[:token]
-      end
-      helper_method :api_key
-
-      def bearer_token
-        pattern = /^Bearer /
-        header = request.headers["Authorization"]
-        header.gsub(pattern, '') if header.present? && header.match(pattern)
-      end
-
-      def spree_token
-        token = request.headers["X-Spree-Token"]
-        return if token.blank?
-
-        Spree::Deprecation.warn(
-          'The custom X-Spree-Token request header is deprecated and will be removed in the next release.' \
-          ' Please use bearer token authorization header instead.'
-        )
-        token
-      end
-
-      def order_token
-        request.headers["X-Spree-Order-Token"] || params[:order_token]
-      end
-
       def find_product(id)
         product_scope.friendly.find(id.to_s)
       rescue ActiveRecord::RecordNotFound
