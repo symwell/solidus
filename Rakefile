@@ -44,15 +44,30 @@ namespace :rspec do
     Dir.chdir("#{File.dirname(__FILE__)}/#{project}") do
       main = args[:base] || 'origin/main'
       system %(env NODE_OPTIONS="--trace-warnings" appmap-js #{appmap_debug ? '--verbose' : ''} fingerprint)
+
       updated_files = []
-      %w[app lib].each do |src_dir|
-        cmd = %(git diff --name-only #{main} #{src_dir} | cut -c#{project.length+2}- | env NODE_OPTIONS="--trace-warnings" appmap-js depends --field source_location --stdin-files)
-        $stderr.puts cmd if rake_debug
-        depends = `#{cmd}`.split("\n")
-        $stderr.puts depends if rake_debug
-        $stderr.puts "Running due to dependency check: #{depends.join(', ')}" unless depends.empty?
-        updated_files += depends
+      begin
+        src_files = nil
+        absolute_src_files = nil
+        Dir.chdir '..' do
+          cmd = %(git diff --name-only #{main})
+          $stderr.puts cmd if rake_debug
+          src_files = `#{cmd}`.split("\n")
+          absolute_src_files = src_files.map { |file| File.absolute_path(file) }
+          src_files = src_files.map{|file| (file.strip.split('/')[1..-1] || []).join('/')}.select{|line| !line.empty?}
+          $stderr.puts "Modified source files: #{src_files.join(', ')}"
+        end
       end
+
+      src_files += absolute_src_files
+      cmd = %(env NODE_OPTIONS="--trace-warnings" appmap-js depends --field source_location #{src_files.join(' ')})
+      $stderr.puts cmd if rake_debug
+      depends = `#{cmd}`.split("\n")
+      $stderr.puts depends if rake_debug
+
+      $stderr.puts "Running due to dependency check: #{depends.join(', ')}" unless depends.empty?
+      updated_files += depends
+
       begin
         cmd = %(git diff --name-only #{main} spec)
         $stderr.puts cmd if rake_debug
