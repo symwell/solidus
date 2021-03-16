@@ -19,6 +19,56 @@ def subproject_task(project, task, title: project, task_name: nil)
   end
 end
 
+namespace :rspec do
+  def debug
+    ENV['DEBUG'] == 'true' || ENV['RAKE_DEBUG'] == 'true'
+  end
+
+  desc 'Run incremental RSpecs'
+  task :incremental, %w[project base] do |_, args|
+    project = args[:project]
+    Dir.chdir("#{File.dirname(__FILE__)}/#{project}") do
+      main = args[:base] || 'origin/main'
+      system %(env NODE_OPTIONS="--trace-warnings" appmap-js #{debug ? '--verbose' : ''} fingerprint)
+      updated_files = []
+      %w[app lib].each do |src_dir|
+        cmd = %(git diff --name-only #{main} #{src_dir} | cut -c#{project.length+2}- | env NODE_OPTIONS="--trace-warnings" appmap-js depends --field source_location --stdin-files)
+        $stderr.puts cmd if debug
+        depends = `#{cmd}`.split("\n")
+        $stderr.puts depends if debug
+        $stderr.puts "Running due to dependency check: #{depends.join(', ')}" unless depends.empty?
+        updated_files += depends
+      end
+      begin
+        cmd = %(git diff --name-only #{main} spec)
+        $stderr.puts cmd if debug
+        depends = `#{cmd}`.split("\n")
+        $stderr.puts depends if debug
+        $stderr.puts "Running due to direct modification: #{depends.join(', ')}" unless depends.empty?
+        updated_files += depends
+      end
+      updated_files.uniq!
+      begin
+        examples = begin
+          File.read('spec/examples.txt').split("\n")[1..-1]
+        rescue Errno::ENOENT
+          []
+        end
+        failed_examples = examples.map{|l| l.split('|')[1] }.map(&:strip).select{|f| f == 'failed'}
+      end
+      $stderr.puts "Failed examples: #{failed_examples.length}" if debug
+      if failed_examples.empty? && updated_files.empty?
+        $stderr.puts 'RSpec testing is up to date'
+      else
+        Bundler.with_unbundled_env do
+          system %(env APPMAP=true bundle exec rspec --color #{updated_files.join(' ')}) unless updated_files.empty?
+          system %(env APPMAP=true bundle exec rspec --color --only-failures)
+        end
+      end
+    end
+  end
+end
+
 %w[spec db:drop db:create db:migrate db:reset].each do |task|
   %w(api backend core frontend sample).each do |project|
     desc "Run specs for #{project}" if task == 'spec'
