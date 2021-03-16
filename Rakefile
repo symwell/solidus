@@ -20,8 +20,22 @@ def subproject_task(project, task, title: project, task_name: nil)
 end
 
 namespace :rspec do
-  def debug
+  def rake_debug
     ENV['DEBUG'] == 'true' || ENV['RAKE_DEBUG'] == 'true'
+  end
+
+  def appmap_debug
+    ENV['DEBUG'] == 'true' || ENV['APPMAP_DEBUG'] == 'true'
+  end
+
+  Example = Struct.new(:location, :status) do
+    def path
+      location.split('[')[0]
+    end
+
+    def failed?
+      status == 'failed'
+    end
   end
 
   desc 'Run incremental RSpecs'
@@ -29,40 +43,45 @@ namespace :rspec do
     project = args[:project]
     Dir.chdir("#{File.dirname(__FILE__)}/#{project}") do
       main = args[:base] || 'origin/main'
-      system %(env NODE_OPTIONS="--trace-warnings" appmap-js #{debug ? '--verbose' : ''} fingerprint)
+      system %(env NODE_OPTIONS="--trace-warnings" appmap-js #{appmap_debug ? '--verbose' : ''} fingerprint)
       updated_files = []
       %w[app lib].each do |src_dir|
         cmd = %(git diff --name-only #{main} #{src_dir} | cut -c#{project.length+2}- | env NODE_OPTIONS="--trace-warnings" appmap-js depends --field source_location --stdin-files)
-        $stderr.puts cmd if debug
+        $stderr.puts cmd if rake_debug
         depends = `#{cmd}`.split("\n")
-        $stderr.puts depends if debug
+        $stderr.puts depends if rake_debug
         $stderr.puts "Running due to dependency check: #{depends.join(', ')}" unless depends.empty?
         updated_files += depends
       end
       begin
         cmd = %(git diff --name-only #{main} spec)
-        $stderr.puts cmd if debug
+        $stderr.puts cmd if rake_debug
         depends = `#{cmd}`.split("\n")
-        $stderr.puts depends if debug
+        $stderr.puts depends if rake_debug
         $stderr.puts "Running due to direct modification: #{depends.join(', ')}" unless depends.empty?
         updated_files += depends
       end
-      updated_files.uniq!
       begin
         examples = begin
           File.read('spec/examples.txt').split("\n")[1..-1]
         rescue Errno::ENOENT
           []
         end
-        failed_examples = examples.map{|l| l.split('|')[1] }.map(&:strip).select{|f| f == 'failed'}
+        failed_examples = examples.map do |line|
+            fields = line.split('|').map(&:strip)
+            example = Example.new(*fields[0..1])
+          end.select(&:failed?)
+        $stderr.puts "Failed examples: #{failed_examples.map(&:location).join(', ')}" if rake_debug
+        updated_files += failed_examples.map(&:path)
       end
-      $stderr.puts "Failed examples: #{failed_examples.length}" if debug
-      if failed_examples.empty? && updated_files.empty?
+      updated_files.uniq!
+      if updated_files.empty?
         $stderr.puts 'RSpec testing is up to date'
       else
         Bundler.with_unbundled_env do
-          system %(env APPMAP=true bundle exec rspec --color #{updated_files.join(' ')}) unless updated_files.empty?
-          system %(env APPMAP=true bundle exec rspec --color --only-failures)
+          cmd = %(env APPMAP=true bundle exec rspec --color #{updated_files.join(' ')})
+          $stderr.puts cmd if rake_debug
+          system cmd
         end
       end
     end
