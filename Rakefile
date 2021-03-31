@@ -55,7 +55,7 @@ namespace :rspec do
           src_files = `#{cmd}`.split("\n")
           absolute_src_files = src_files.map { |file| File.absolute_path(file) }
           src_files = src_files.map{|file| (file.strip.split('/')[1..-1] || []).join('/')}.select{|line| !line.empty?}
-          $stderr.puts "Modified source files: #{src_files.join(', ')}"
+          $stderr.puts "Modified source files: [#{src_files.join(' ')}]"
         end
       end
 
@@ -65,7 +65,7 @@ namespace :rspec do
       depends = `#{cmd}`.split("\n")
       $stderr.puts depends if rake_debug
 
-      $stderr.puts "Running due to dependency check: #{depends.join(', ')}" unless depends.empty?
+      $stderr.puts "Running due to dependency check: #{depends.join(' ')}" unless depends.empty?
       updated_files += depends
 
       begin
@@ -86,7 +86,7 @@ namespace :rspec do
             fields = line.split('|').map(&:strip)
             example = Example.new(*fields[0..1])
           end.select(&:failed?)
-        $stderr.puts "Failed examples: #{failed_examples.map(&:location).join(', ')}" if rake_debug
+        $stderr.puts "Failed examples: #{failed_examples.map(&:location).join(' ')}" if rake_debug
         updated_files += failed_examples.map(&:path)
       end
       updated_files.uniq!
