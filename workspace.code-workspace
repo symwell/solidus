@@ -47,6 +47,21 @@
 		},
 		{
 			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/paperclip-6.1.0"
+		},
+		{
+			"path": "../sample_app_6th_ed"
+		},
+		{
+			"path": "../../appland/appmap_depends"
+		},
+		{
+			"path": "../../appland/appmap-js"
+		},
+		{
+			"path": "../../appland/appland"
+		},
+		{
+			"path": "../../../.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/guard-rspec-4.7.3"
 		}
 	],
 	"settings": {

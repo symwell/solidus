@@ -11,9 +11,10 @@
   "bugs": "https://github.com/solidusio/solidus/issues",
   "license": "BSD-3-Clause",
   "scripts": {
-    "lint": "find . -path \"**\/app\/assets\/javascripts\/*.js\" | grep -f .gitignore | xargs eslint"
+    "lint": "find . -path \"**/app/assets/javascripts/*.js\" | grep -f .gitignore | xargs eslint"
   },
   "devDependencies": {
+    "@appland/appmap": "^1.15.2",
     "eslint": "5.3.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-airbnb-base": "13.1.0",
