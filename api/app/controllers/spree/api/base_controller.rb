@@ -35,12 +35,12 @@ module Spree
 
       public
 
-      # @label provider.current_user
+      # @label security.current_user
       def load_user
         @current_api_user ||= Spree.user_class.find_by(spree_api_key: api_key.to_s)
       end
 
-      # @label provider.authentication
+      # @label security.authentication
       def authenticate_user
         unless @current_api_user
           if requires_authentication? && api_key.blank? && order_token.blank?
@@ -49,6 +49,7 @@ module Spree
             render "spree/api/errors/invalid_api_key", status: :unauthorized
           end
         end
+        true
       end
 
       # @label rbac.roles
@@ -60,21 +61,20 @@ module Spree
         end
       end
 
-
-      # @label credential.api_key
+      # @label secret credential.api_key
       def api_key
         bearer_token || spree_token || params[:token]
       end
       helper_method :api_key
 
-      # @label credential.bearer_token
+      # @label secret credential.bearer_token
       def bearer_token
         pattern = /^Bearer /
         header = request.headers["Authorization"]
         header.gsub(pattern, '') if header.present? && header.match(pattern)
       end
 
-      # @label credential.spree_token
+      # @label secret credential.spree_token
       def spree_token
         token = request.headers["X-Spree-Token"]
         return if token.blank?
@@ -86,7 +86,7 @@ module Spree
         token
       end
 
-      # @label credential.order_token
+      # @label secret credential.order_token
       def order_token
         request.headers["X-Spree-Order-Token"] || params[:order_token]
       end
@@ -136,6 +136,7 @@ module Spree
         @resource = resource
         render "spree/api/errors/invalid_resource", status: :unprocessable_entity
       end
+      
       def find_product(id)
         product_scope.friendly.find(id.to_s)
       rescue ActiveRecord::RecordNotFound

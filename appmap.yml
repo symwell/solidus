@@ -1,5 +1,4 @@
-name: nytem-2021/solidus
-
+name: solidus
 packages:
 - path: app/controllers
 - path: app/helpers
@@ -25,7 +24,6 @@ packages:
 - gem: activemerchant
 - gem: activerecord
 - gem: cancancan
-  shallow: false
 - gem: ransack
 - gem: carmen
 - gem: mini_magick

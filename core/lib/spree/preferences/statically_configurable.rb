@@ -20,6 +20,7 @@ module Spree
         super(val.presence)
       end
 
+      # @label deserialize.safe
       def preferences
         if respond_to?(:preference_source) && preference_source
           self.class.preference_sources[preference_source] || {}
