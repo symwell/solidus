@@ -11,5 +11,5 @@ APPMAP=true bundle exec rspec spec/controllers spec/features
 cd ..
 
 find tmp/appmap-all -name "*.appmap.json" | grep -E '[^/]{240,}$' | xargs rm
-NODE_OPTIONS="--trace-warnings --max-old-space-size=4096"  appmap-js fingerprint tmp/appmap-all
+NODE_OPTIONS="--trace-warnings --max-old-space-size=4096"  appmap-js index tmp/appmap-all
 

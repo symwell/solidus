@@ -2,10 +2,6 @@
 
 source 'https://rubygems.org'
 
-gem 'appmap',
-  git: 'git@github.com:applandinc/appmap-ruby.git',
-  branch: 'master'
-
 group :backend, :frontend, :core, :api do
 
   gemspec require: false
@@ -80,7 +76,6 @@ gem 'rspec_junit_formatter', require: false, group: :ci
 
 gem 'guard'
 gem 'guard-rspec'
-gem 'appmap_depends', github: 'applandinc/appmap_depends-ruby', branch: 'main'
 
 # Documentation
 gem 'yard', require: false, group: :docs

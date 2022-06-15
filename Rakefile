@@ -43,7 +43,7 @@ namespace :rspec do
     project = args[:project]
     Dir.chdir("#{File.dirname(__FILE__)}/#{project}") do
       main = args[:base] || 'origin/main'
-      system %(env NODE_OPTIONS="--trace-warnings" appmap-js #{appmap_debug ? '--verbose' : ''} fingerprint)
+      system %(env NODE_OPTIONS="--trace-warnings" yarn run appmap #{appmap_debug ? '--verbose' : ''} index)
 
       updated_files = []
       begin
@@ -60,7 +60,9 @@ namespace :rspec do
       end
 
       src_files += absolute_src_files
-      cmd = %(env NODE_OPTIONS="--trace-warnings" appmap-js depends --field source_location #{src_files.join(' ')})
+      cmd = %(cat <<FILES | env NODE_OPTIONS="--trace-warnings" yarn run appmap depends --stdin-files --field source_location
+#{src_files.join("\n")}
+FILES)
       $stderr.puts cmd if rake_debug
       depends = `#{cmd}`.split("\n")
       $stderr.puts depends if rake_debug

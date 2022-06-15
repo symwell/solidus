@@ -14,7 +14,8 @@
     "lint": "find . -path \"**/app/assets/javascripts/*.js\" | grep -f .gitignore | xargs eslint"
   },
   "devDependencies": {
-    "@appland/appmap": "^1.15.2",
+    "@appland/appmap": "3.27.1",
+    "@appland/scanner": "^1.59.0",
     "eslint": "5.3.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-airbnb-base": "13.1.0",
