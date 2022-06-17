@@ -1,0 +1,25 @@
+{
+  "folders": [
+    {
+      "path": "api"
+    },
+    {
+      "path": "backend"
+    },
+    {
+      "path": "core"
+    },
+    {
+      "path": "frontend"
+    },
+    {
+      "path": "lib"
+    }
+  ],
+  "settings": {
+    "appMap.findingsEnabled": true,
+    "appMap.indexEnabled": true,
+    "appMap.instructionsEnabled": true,
+    "appMap.indexCommand": "true"
+  }
+}
