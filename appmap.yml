@@ -9,9 +9,7 @@ packages:
     shallow: false
   - gem: solidus_frontend
     shallow: false
-- gem: activemerchant
-- gem: activerecord
-- gem: cancancan
-- gem: ransack
-- gem: carmen
-- gem: mini_magick
+functions:
+  - method: JbuilderTemplate#cache!
+    gem: jbuilder
+    label: deserialize.safe
