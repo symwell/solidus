@@ -1,6 +1,7 @@
 name: solidus
 packages:
   - path: app
+  - path: lib
   - gem: solidus_core
     shallow: false
   - gem: solidus_api
@@ -9,7 +10,11 @@ packages:
     shallow: false
   - gem: solidus_frontend
     shallow: false
+  - gem: paperclip
+  - gem: image_processing
+  - gem: mini_magick
 functions:
-  - method: JbuilderTemplate#cache!
-    gem: jbuilder
+  - methods:
+      - Spree::Base#initialize_preference_defaults
+      - JbuilderTemplate#cache!
     label: deserialize.safe
