@@ -4,10 +4,10 @@
       "path": "api"
     },
     {
-      "path": "backend"
+      "path": "core"
     },
     {
-      "path": "core"
+      "path": "backend"
     },
     {
       "path": "frontend"
@@ -17,9 +17,6 @@
     }
   ],
   "settings": {
-    "appMap.findingsEnabled": true,
-    "appMap.indexEnabled": true,
-    "appMap.instructionsEnabled": true,
-    "appMap.indexCommand": "true"
+    "appMap.findingsEnabled": true
   }
 }
