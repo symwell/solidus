@@ -12,7 +12,7 @@ def appmap_debug?
   ENV['APPMAP_DEBUG'] == 'true'
 end
 
-guard :rspec, env: { 'APPMAP' => true }, cmd: 'bundle exec rspec', all_on_start: false do
+guard :rspec, cmd: 'bundle exec rspec', all_on_start: false do
   logger level: :debug if guard_debug? || rspec_debug?
   watch(%r{^spec/.+_spec\.rb$})
-end  
+end
