@@ -50,6 +50,7 @@ module Spree::Preferences
         value
       end
 
+      # @label deserialize.safe
       define_method preference_setter_method(name) do |value|
         value = convert_preference_value(value, type, preference_encryptor)
         preferences[name] = value

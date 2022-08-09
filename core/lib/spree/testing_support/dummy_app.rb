@@ -38,7 +38,11 @@ module DummyApp
     ENV["LIB_NAME"] = lib_name
     DummyApp::Application.config.root = File.join(gem_root, 'spec', 'dummy')
 
-    DummyApp::Application.initialize!
+    begin
+      DummyApp::Application.initialize!
+    rescue
+      raise unless $!.message == 'Application has been already initialized.'
+    end
 
     if auto_migrate
       DummyApp::Migrations.auto_migrate
