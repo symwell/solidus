@@ -2,6 +2,8 @@
 
 source 'https://rubygems.org'
 
+gem 'appmap', github: 'applandinc/appmap-ruby', branch: 'master'
+
 group :backend, :frontend, :core, :api do
 
   gemspec require: false
