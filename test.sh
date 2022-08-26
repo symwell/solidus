@@ -35,6 +35,7 @@ export DATABASE_CLEANER_ALLOW_PRODUCTION=true # not sure if this must be set too
 # verify solidus containers are running
 if [ `docker ps | grep solidus_dev_pg_1 | wc -l | xargs echo -n` == "1" ]; then
     echo "Solidus started correctly"
+    export RAILS_ENV=test
     export DB=postgres
     echo 'Y
 ' | bin/sandbox
@@ -46,7 +47,14 @@ if [ `docker ps | grep solidus_dev_pg_1 | wc -l | xargs echo -n` == "1" ]; then
     # the following two currently fail
     # bin/rails db:seed
     # bin/rails spree_sample:load
-    bin/build
+    # bin/build
+    echo DATABASE_URL: $DATABASE_URL
+    echo To test again run:
+    echo "  export RAILS_ENV=test"
+    echo "  export DB=postgres"
+    echo "  export DATABASE_URL=$DATABASE_URL"
+    echo "  export DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL=true"
+    echo "  bin/build"
 else
     echo "Solidus didn't start correctly"
 fi
