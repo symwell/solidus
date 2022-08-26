@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# without these "nvm install" doesn't work
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+if [ `which chromedriver | wc -l` == "0" ]; then
+    echo "You need to install chromedriver"
+    exit 1
+fi
+# When running the tests got stuck once, I saw stuck chromedriver processes
+pkill chromedriver
+
 # guarantee solidus containers are not running
 docker ps | grep -i solidus
 docker stop solidus_dev_pg_1
@@ -9,7 +21,7 @@ cd solidus_dev
 docker-compose up -d pg
 docker ps | grep -i solidus
 
-export DATABASE_URL=postgres://postgres@`docker-compose port pg 5432 | xargs echo -n`
+export DATABASE_URL=postgres://postgres@localhost:`docker-compose port pg 5432 | sed -e 's/.*://g' | xargs echo -n`
 echo DATABASE_URL: $DATABASE_URL
 
 cd -
