@@ -41,7 +41,7 @@ end
 # Run specs for each lib separately
 specs.each do |lib, files|
   Dir.chdir(lib) do
-    command = ['bundle', 'exec', 'rspec', *options, *files]
+    command = ['bundle', 'exec', 'rspec', *options, *files, "--format=documentation"]
     warn "$ cd #{lib}; #{command.join(' ')}; cd -"
     system *command
     exit $?.exitstatus unless $?.success?
