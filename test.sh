@@ -39,13 +39,37 @@ if [ `docker ps | grep solidus_dev_pg_1 | wc -l | xargs echo -n` == "1" ]; then
     export DB=postgres
     echo 'Y
 ' | bin/sandbox
+
+    # from https://stackoverflow.com/questions/72970170/upgrading-to-rails-6-1-6-1-causes-psychdisallowedclass-tried-to-load-unspecif
+    # allow yaml_unsafe_load else we get the error:
+    #
+    # $ bin/rails db:seed
+    # Running Rails from: /home/test/src/solidus/sandbox
+    # Loading seed file: stores
+    # Loading seed file: store_credit
+    # rails aborted!
+    # Psych::DisallowedClass: Tried to load unspecified class: Symbol
+    # (eval):2:in `symbol'
+    # /home/test/src/solidus/core/db/default/spree/store_credit.rb:11:in `<main>'
+    # /home/test/src/solidus/core/db/seeds.rb:16:in `require_relative'
+    YAML_CONFIG="\n  config.active_record.use_yaml_unsafe_load = true"
+    sed -ie "s:\(.*config.eager_load = false.*\):\1${YAML_CONFIG}:g" sandbox/config/environments/test.rb
+    #exit 0
+
     # At some point this command asks:
     # Would you like to run the migrations now? [Y/n]
 #     echo 'Y
 # ' | bin/rails railties:install:migrations
     # bin/rails db:migrate
     # the following two currently fail
-    # bin/rails db:seed
+
+    # This command asks:
+    # Create the admin user (press enter for defaults).
+    # Email [admin@example.com]:
+    # Password [test123]:
+    echo '
+
+' | bin/rails db:seed
     # bin/rails spree_sample:load
     # bin/build
     echo DATABASE_URL: $DATABASE_URL
